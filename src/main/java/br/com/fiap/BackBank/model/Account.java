@@ -1,7 +1,7 @@
 package br.com.fiap.BackBank.model;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,11 +12,12 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Builder.Default;
 
 @Entity
 @Data
@@ -34,20 +35,19 @@ public class Account {
     @NotBlank
     private String name;
 
-    @NotBlank
+    @NotBlank @Size(min = 11, max = 11)
     private String cpf;
 
-    @PastOrPresent
-    private Date openingDate;
+    @PastOrPresent @Default
+    private LocalDate openingDate = LocalDate.now();
 
-    @PositiveOrZero
-    private BigDecimal initalBalance;
+    @PositiveOrZero @Default
+    private BigDecimal initialBalance = BigDecimal.valueOf(0);
     
     @Default
     private boolean active = true;
 
     @Enumerated(EnumType.STRING)
-    @NotBlank
     private AccountType type;
 
 

@@ -37,17 +37,23 @@ public class AccountService {
         repo.save(account);
     }
 
-    public Account changeAccountBalanceById(Long id, BigDecimal amount) {
+    public Account changeAccountBalanceById(Long id, Double amount) {
         var account = findById(id);
-        account.setInitalBalance(account.getInitalBalance().add(amount));
+        account.setInitialBalance(BigDecimal.valueOf(account.getInitialBalance().doubleValue() + amount));
+        repo.save(account);
         return account;
      }
 
-    public Account sendPixTo(Long id, BigDecimal amount) {
-        if (amount.doubleValue() <= 0) {
+    public Account sendPixTo(Long idS, Long idR, Double amount) {
+        if (amount <= 0) {
             return null;
+            //ExecptionResponse
         }
 
-        return null;
+        var sAcc = changeAccountBalanceById(idS, amount * -1);
+
+        changeAccountBalanceById(idR, amount);
+
+        return sAcc;
     }
 }
